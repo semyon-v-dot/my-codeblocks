@@ -1,4 +1,6 @@
 using System.IO;
+using System.Linq;
+using System.Numerics;
 using NUnit.Framework;
 using Lab1;
 
@@ -227,9 +229,45 @@ public class Lab1Tests
     [Test]
     public void RSATest()
     {
-        var textForRSA = File.ReadAllText("TextForRSA.txt");
-        var decryptedText = File.ReadAllText("DecryptedText.txt");
+        new MyRSA().DoRSA();
+        
+        var textForRSA = File.ReadAllText(MyRSA.DirPath + @"\TextForRSA.txt");
+        var decryptedText = File.ReadAllText(MyRSA.DirPath + @"\DecryptedText.txt");
         if (decryptedText != "")
             Assert.AreEqual(textForRSA, decryptedText);
+    }
+    
+    [TestCase("123", 123)]
+    [TestCase("023", 23)]
+    [TestCase("003", 3)]
+    [TestCase("000", 0)]
+    public void GetThreeDigitsByteTests(string expected, byte singleByte)
+    {
+        Assert.AreEqual(expected, new MyRSA().GetThreeDigitsByte(singleByte));
+    }
+
+    [TestCase(new [] { "123" }, new byte[] {123})]
+    public void GetBigIntsFromBytesTests(string[] expectedStr, byte[] bytes)
+    {
+        Assert.AreEqual(expectedStr.Select(BigInteger.Parse), new MyRSA().GetBigIntsFromBytes(bytes));
+    }
+
+    [TestCase(new[] {"123"}, "123")]
+    [TestCase(new[] {"123", "123", "123", "123"}, "123123123123")]
+    [TestCase(new string[] {}, "")]
+    public void GetThreeCharsStringsFromStringTests(string[] expected, string input)
+    {
+        Assert.AreEqual(expected, new MyRSA().GetThreeCharsStringsFromString(input));
+    }
+
+    [TestCase(new byte[] {123}, new[] {"123"}, 1)]
+    [TestCase(new byte[] {}, new string[] {}, 0)]
+    public void GetBytesFromBigIntsTests(
+        byte[] expected, string[] bigIntsStrings, int quantityOfBytesInLastNumber)
+    {
+        Assert.AreEqual(
+            expected, 
+            new MyRSA().GetBytesFromBigInts(
+                bigIntsStrings.Select(BigInteger.Parse).ToArray(), quantityOfBytesInLastNumber));
     }
 }

@@ -2,6 +2,24 @@ namespace Lab1;
 
 public class IntegerNumber
 {
+    protected bool Equals(IntegerNumber other)
+    {
+        return _byteNumber.Equals(other._byteNumber);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((IntegerNumber) obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return _byteNumber.GetHashCode();
+    }
+
     private readonly byte[] _byteNumber;
 
     public IntegerNumber(byte[] inputByteNumber)
@@ -46,29 +64,13 @@ public class IntegerNumber
             
             byteNumber.Reverse();
             
-            if (sizeOfByteNumber < defaultSizeOfByteNumber)
-                _byteNumber = byteNumber.Skip(defaultSizeOfByteNumber - sizeOfByteNumber).ToArray();
-            else
-                _byteNumber = byteNumber.ToArray();
+            _byteNumber = 
+                sizeOfByteNumber < defaultSizeOfByteNumber 
+                    ? byteNumber.Skip(defaultSizeOfByteNumber - sizeOfByteNumber).ToArray() 
+                    : byteNumber.ToArray();
         }
     }
 
-    public static List<byte> GetReversedByteNumberFromInt(int inputIntNumber)
-    {
-        var byteNumber = new List<byte>();
-        var inputIsNegative = inputIntNumber < 0;
-        inputIntNumber = Math.Abs(inputIntNumber);
-        while (inputIntNumber > 0)
-        {
-            byteNumber.Add((byte) (inputIntNumber % 256));
-            inputIntNumber /= 256;
-        }
-        if (inputIsNegative)
-            byteNumber[^1] += 128; 
-
-        return byteNumber;
-    }
-        
     public static int GetIntFromByteNumber(byte[] byteNumber)
     {
         var outputInt = byteNumber[0] % 128 * (int)Math.Pow(256, byteNumber.Length - 1);
@@ -148,13 +150,28 @@ public class IntegerNumber
         return aIntNumber > bIntNumber;  
     }
 
-    public void ChangeSign()
-    {
-        _byteNumber[0] += 128;
-    }
-
     public int ToInt() => GetIntFromByteNumber(_byteNumber);
 
     public byte[] GetByteNumber() => _byteNumber.ToArray();
     
+    private static List<byte> GetReversedByteNumberFromInt(int inputIntNumber)
+    {
+        var byteNumber = new List<byte>();
+        var inputIsNegative = inputIntNumber < 0;
+        inputIntNumber = Math.Abs(inputIntNumber);
+        while (inputIntNumber > 0)
+        {
+            byteNumber.Add((byte) (inputIntNumber % 256));
+            inputIntNumber /= 256;
+        }
+        if (inputIsNegative)
+            byteNumber[^1] += 128; 
+
+        return byteNumber;
+    }
+    
+    private void ChangeSign()
+    {
+        _byteNumber[0] += 128;
+    }
 }
