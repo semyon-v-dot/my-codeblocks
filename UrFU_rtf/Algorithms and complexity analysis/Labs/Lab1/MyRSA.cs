@@ -25,7 +25,6 @@ public class MyRSA
 
     public void DoRSA()
     {
-
         var data = File.ReadAllBytes(DirPath + @"\TextForRSA.txt");
         var dataBigInts = GetBigIntsFromBytes(data);
         

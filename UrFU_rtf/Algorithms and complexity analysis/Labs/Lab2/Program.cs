@@ -1,10 +1,16 @@
-﻿namespace Lab1
+﻿using System.Xml;
+
+
+namespace Lab2;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");            
-        }
+        var sortFuncs = new SortFuncs();
+        sortFuncs.SortFuncForTxtOutput = sortFuncs.Quicksort;
+        
+        sortFuncs.FillAndGetSortData();
+        sortFuncs.FillAndGetSortedData();
     }
 }
