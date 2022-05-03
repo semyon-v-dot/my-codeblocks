@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using NUnit.Framework;
 using Block2;
 
@@ -8,34 +9,75 @@ namespace LabsTests;
 
 public class Block2Tests
 {
-    [TestCase(@"5
-0 1
-0 2
-1 2
-1 4
-2 4
-4 3")]
-    [TestCase(@"5
-0 1
-0 2
-1 2
-1 3
-2 3
-3 4")]
+    [TestCase(@"<root>
+<NumberOfVertexes>5</NumberOfVertexes>
+<Vertex>
+<First>0</First> <Second>1</Second>
+</Vertex>
+<Vertex>
+<First>0</First> <Second>2</Second>
+</Vertex>
+<Vertex>
+<First>1</First> <Second>2</Second>
+</Vertex>
+<Vertex>
+<First>1</First> <Second>4</Second>
+</Vertex>
+<Vertex>
+<First>2</First> <Second>4</Second>
+</Vertex>
+<Vertex>
+<First>0</First> <Second>1</Second>
+</Vertex>
+<Vertex>
+<First>4</First> <Second>3</Second>
+</Vertex>
+</root>")]
+    [TestCase(@"<root>
+<NumberOfVertexes>5</NumberOfVertexes>
+<Vertex>
+<First>0</First> <Second>1</Second>
+</Vertex>
+<Vertex>
+<First>0</First> <Second>2</Second>
+</Vertex>
+<Vertex>
+<First>1</First> <Second>2</Second>
+</Vertex>
+<Vertex>
+<First>1</First> <Second>3</Second>
+</Vertex>
+<Vertex>
+<First>2</First> <Second>3</Second>
+</Vertex>
+<Vertex>
+<First>3</First> <Second>4</Second>
+</Vertex>
+</root>")]
     public void GraphColoringTest(string input)
     {
-        var lines = input.Split('\n');
-        var graph = new GraphToColor(int.Parse(lines.First()));
-        AddEdges(graph, lines.Skip(1));
+        var docXml = new XmlDocument();
+        docXml.LoadXml(input);
+        var inputXmlNodes = docXml
+            .DocumentElement
+            .ChildNodes
+            .OfType<XmlNode>()
+            .ToArray();
+        
+        var graph = new GraphToColor(int.Parse(inputXmlNodes.First().InnerText));
+        AddEdges(graph, inputXmlNodes.Skip(1));
 
         CheckResultColoring(graph, graph.GreedyColoring());
     }
 
-    private void AddEdges(GraphToColor graph, IEnumerable<string> inputLines)
+    private void AddEdges(GraphToColor graph, IEnumerable<XmlNode> inputNodes)
     {
-        var intInput = inputLines
-            .Select(line => line.Split(" "))
-            .Select(lines => Tuple.Create(int.Parse(lines[0]), int.Parse(lines[1])));
+        var intInput = inputNodes
+            .Select(vertex => vertex.ChildNodes)
+            .Select(
+                firstSecond 
+                => Tuple.Create(int.Parse(firstSecond.Item(0).InnerText), 
+                                int.Parse(firstSecond.Item(1).InnerText)));
         foreach (var (item1, item2) in intInput)
             graph.AddEdge(item1, item2);
     }
