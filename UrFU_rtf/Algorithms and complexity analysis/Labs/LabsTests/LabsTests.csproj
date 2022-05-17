@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Block1Algo\Block1Algo.csproj" />
       <ProjectReference Include="..\Block2\Block2.csproj" />
       <ProjectReference Include="..\Lab1\Lab1.csproj" />
       <ProjectReference Include="..\Lab2\Lab2.csproj" />

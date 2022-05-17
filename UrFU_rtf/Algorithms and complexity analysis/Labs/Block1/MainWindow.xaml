@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Block1"
         mc:Ignorable="d"
+        MouseMove="Window_MouseMove"
         >
-    <Grid>
-
-    </Grid>
+    <StackPanel>
+        <Button Background="LightBlue" 
+                BorderBrush="Black" BorderThickness="1" 
+                Click="DrawPolygonCanvas" ClickMode="Press">
+            Polygons Button
+        </Button>
+        
+        <Button Background="LightBlue" 
+                BorderBrush="Black" BorderThickness="1" 
+                Click="DrawGeometricMotion" ClickMode="Press">
+            Geometric Motion
+        </Button>
+        
+        <!-- <Button Background="LightBlue"  -->
+        <!--         BorderBrush="Black" BorderThickness="1"  -->
+        <!--         Click="Draw3DObjectLighting" ClickMode="Press"> -->
+        <!--     3D Object Lighting -->
+        <!-- </Button> -->
+    </StackPanel>
 </Window>

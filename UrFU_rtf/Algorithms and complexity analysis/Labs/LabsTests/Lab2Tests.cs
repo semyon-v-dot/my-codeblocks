@@ -18,19 +18,19 @@ public class Lab2Tests
 
     private readonly SortFuncs _sortFuncs = new();
     
-    [OneTimeSetUp]
-    public void StartTimerAndMemoryCheck()
-    {
-        throw new NotImplementedException();
-    }
+    // [OneTimeSetUp]
+    // public void StartTimerAndMemoryCheck()
+    // {
+    //     throw new NotImplementedException();
+    // }
 
-    [TearDown]
-    public void TimerAndMemoryCheck()
-    {
-        // Print into "SortFuncsInfo.txt"
-        throw new NotImplementedException();
-    }
-    
+    // [TearDown]
+    // public void TimerAndMemoryCheck()
+    // {
+    //     // Print into "SortFuncsInfo.txt"
+    //     throw new NotImplementedException();
+    // }
+    //
     [Test]
     public void TestBubbleSort()
     {

@@ -1,7 +1,4 @@
-﻿using System.Xml;
-
-
-namespace Lab2;
+﻿namespace Lab2;
 
 public class Program
 {
